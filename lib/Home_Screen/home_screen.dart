@@ -15,6 +15,7 @@ import 'package:dp_matka_3/Home_Screen/game_screen.dart';
 import 'package:dp_matka_3/Splash/drawer_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,234 +195,54 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(
               color: ColorUtils.blue,
             ))
-          : RefreshIndicator(
-              onRefresh: () async {
-                await getSavedBodyData();
+          : WillPopScope(
+              onWillPop: () async {
+                SystemNavigator.pop();
+                return true;
               },
-              child: Column(
-                children: [
-                  gethomedata!.verify != '0'
-                      ? Container(
-                          color: Colors.white,
-                          child: CarouselSlider.builder(
-                            options: CarouselOptions(
-                              aspectRatio: 18 / 9,
-                              viewportFraction: 0.999,
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 2),
-                            ),
-                            itemCount: gethomedata?.images.length ?? 0,
-                            itemBuilder: (BuildContext context, int index,
-                                int realIndex) {
-                              return Center(
-                                child: gethomedata?.verify != '0'
-                                    ? Image.network(
-                                        ApiUrls.baseUrl +
-                                            gethomedata!.images[index].image,
-                                        fit: BoxFit.fill,
-                                        height: 200,
-                                        width: 1000)
-                                    : Container(
-                                        color: Colors.white,
-                                        width: 1000,
-                                      ),
-                              );
-                            },
-                          ),
-                        )
-                      : Container(),
-                  /* gethomedata?.verify != '0'
-                      ? Container(
-                          color: Colors.black,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  if (getConfigData!.data[18].data == "0") {
-                                  } else {
-                                    const countrycode = '91';
-                                    String phoneNumber =
-                                        '${getConfigData!.data[1].data}';
-                                    print("phone number : $phoneNumber");
-                                    final whatsappUrl =
-                                        'https://wa.me/$countrycode$phoneNumber';
-                                    if (await canLaunch(whatsappUrl)) {
-                                      await launch(whatsappUrl,
-                                          forceSafariVC: false);
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text(
-                                              'WhatsApp is not installed on your device.'),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await getSavedBodyData();
+                },
+                child: Column(
+                  children: [
+                    gethomedata!.verify != '0'
+                        ? Container(
+                            color: Colors.white,
+                            child: CarouselSlider.builder(
+                              options: CarouselOptions(
+                                aspectRatio: 18 / 9,
+                                viewportFraction: 0.999,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(seconds: 2),
+                              ),
+                              itemCount: gethomedata?.images.length ?? 0,
+                              itemBuilder: (BuildContext context, int index,
+                                  int realIndex) {
+                                return Center(
+                                  child: gethomedata?.verify != '0'
+                                      ? Image.network(
+                                          ApiUrls.baseUrl +
+                                              gethomedata!.images[index].image,
+                                          fit: BoxFit.fill,
+                                          height: 200,
+                                          width: 1000)
+                                      : Container(
+                                          color: Colors.white,
+                                          width: 1000,
                                         ),
-                                      );
-                                    }
-                                  }
-                                },
-                                child: box(
-                                    Color(0xFF04b83c),
-                                    ImageUtils.whatsapp,
-                                    "WhatsApp",
-                                    Colors.transparent),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => HowToPlay());
-                                },
-                                child: box(
-                                    Color(0xFF006afe),
-                                    ImageUtils.icon_how_to,
-                                    "How to\nplay",
-                                    Colors.white),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => WithdrawPoint(
-                                      wallet: gethomedata?.wallet ?? ""));
-                                },
-                                child: boxImage(
-                                    Color(0xFFff8500),
-                                    ImageUtils.withdrawIcon,
-                                    "Withdraw\nMoney",
-                                    Colors.white),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => AddPointScreen(
-                                      wallet: gethomedata?.wallet ?? ""));
-                                },
-                                child: boxImage(
-                                    Color(0xFF4b3cc9),
-                                    ImageUtils.walletIcon,
-                                    "Add\nMoney",
-                                    Colors.white),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  gethomedata?.verify != '0'
-                      ? Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                          color: Color(0xFFb50131),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => SelectGame(
-                                      wallet: gethomedata?.wallet ?? ""));
-                                },
-                                child: Container(
-                                  height: 35,
-                                  width: Get.width * 0.47,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(22),
-                                    color: Colors.white,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 17,
-                                            backgroundImage:
-                                                AssetImage(ImageUtils.coin),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "STARLINE",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => GaliDisawar(
-                                      wallet: gethomedata?.wallet ?? ""));
-                                },
-                                child: Container(
-                                  height: 35,
-                                  width: Get.width * 0.47,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(22),
-                                    color: Colors.white,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 17,
-                                        backgroundImage:
-                                            AssetImage(ImageUtils.gd),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "GALI DISAWAR",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(), */
-                  gethomedata!.verify != '0'
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Get.to(() => AddPointScreen(
-                                        wallet: gethomedata?.wallet ?? ""));
-                                  },
-                                  child: homeButton(
-                                      ImageUtils.walletd, "ADD MONEY")),
-                              InkWell(
-                                  onTap: () {
-                                    Get.to(() => WithdrawPoint(
-                                        wallet: gethomedata?.wallet ?? ""));
-                                  },
-                                  child: homeButton(
-                                      ImageUtils.withdraw, "WITHDRAW")),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  gethomedata!.verify != '0'
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Get.to(() => SelectGame(
-                                        wallet: gethomedata?.wallet ?? ""));
-                                  },
-                                  child: homeTextButton("PLAY STARLINE", 17)),
-                              InkWell(
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
+                    /* gethomedata?.verify != '0'
+                        ? Container(
+                            color: Colors.black,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                InkWell(
                                   onTap: () async {
                                     if (getConfigData!.data[18].data == "0") {
                                     } else {
@@ -446,307 +267,495 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                     }
                                   },
-                                  child: homeButton(
-                                      ImageUtils.whatsapp, "WHATSAPP")),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  /* gethomedata!.verify != '0'
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
+                                  child: box(
+                                      Color(0xFF04b83c),
+                                      ImageUtils.whatsapp,
+                                      "WhatsApp",
+                                      Colors.transparent),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => HowToPlay());
+                                  },
+                                  child: box(
+                                      Color(0xFF006afe),
+                                      ImageUtils.icon_how_to,
+                                      "How to\nplay",
+                                      Colors.white),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => WithdrawPoint(
+                                        wallet: gethomedata?.wallet ?? ""));
+                                  },
+                                  child: boxImage(
+                                      Color(0xFFff8500),
+                                      ImageUtils.withdrawIcon,
+                                      "Withdraw\nMoney",
+                                      Colors.white),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => AddPointScreen(
+                                        wallet: gethomedata?.wallet ?? ""));
+                                  },
+                                  child: boxImage(
+                                      Color(0xFF4b3cc9),
+                                      ImageUtils.walletIcon,
+                                      "Add\nMoney",
+                                      Colors.white),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    gethomedata?.verify != '0'
+                        ? Container(
+                            padding:
+                                EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                            color: Color(0xFFb50131),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
                                   onTap: () {
                                     Get.to(() => SelectGame(
                                         wallet: gethomedata?.wallet ?? ""));
                                   },
-                                  child: homeTextButton("PLAY STARLINE", 17)),
-                              InkWell(
+                                  child: Container(
+                                    height: 35,
+                                    width: Get.width * 0.47,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(22),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 17,
+                                              backgroundImage:
+                                                  AssetImage(ImageUtils.coin),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "STARLINE",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
                                   onTap: () {
                                     Get.to(() => GaliDisawar(
                                         wallet: gethomedata?.wallet ?? ""));
                                   },
-                                  child:
-                                      homeTextButton("PLAY GALI DESAWAR", 15)),
-                            ],
-                          ),
-                        )
-                      : Container(), */
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsetsDirectional.symmetric(
-                          horizontal: 8, vertical: 5),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFef2a7a),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: gethomedata!.result.length,
-                          itemBuilder: (context, index) {
-                            final List<GlobalKey<ShakeWidgetState>> shakeKeys =
-                                List.generate(
-                              gethomedata!.result.length,
-                              (index) => GlobalKey<ShakeWidgetState>(),
-                            );
-                            return GestureDetector(
-                              onTap: () {
-                                if (gethomedata!.verify != '0') {
-                                  if (gethomedata?.result[index].isOpen ==
-                                          "0" &&
-                                      gethomedata?.result[index].isClose ==
-                                          "0") {
-                                    shakeKeys[index].currentState?.shake();
-                                    Vibration.vibrate(duration: 700);
-                                  } else {
-                                    int isOpen = int.tryParse(gethomedata!
-                                            .result[index].isOpen) ??
-                                        0;
-                                    int isClose = int.tryParse(gethomedata!
-                                            .result[index].isClose) ??
-                                        0;
-                                    print("home open : $isOpen");
-                                    print("home close : $isClose");
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GameScreen(
-                                          openTime: gethomedata!
-                                              .result[index].openTime,
-                                          closeTime: gethomedata!
-                                              .result[index].closeTime,
-                                          title: gethomedata
-                                                  ?.result[index].market ??
-                                              "",
-                                          walletPrice: gethomedata!.wallet,
-                                          isOpen: isOpen,
-                                          isClose: isClose,
+                                  child: Container(
+                                    height: 35,
+                                    width: Get.width * 0.47,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(22),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 17,
+                                          backgroundImage:
+                                              AssetImage(ImageUtils.gd),
                                         ),
-                                      ),
-                                    );
-                                  }
-                                } else {}
-                              },
-                              child: ShakeMe(
-                                key: shakeKeys[index],
-                                // configure the animation parameters
-                                shakeCount: 5,
-                                shakeOffset: 5,
-                                shakeDuration: Duration(milliseconds: 700),
-                                child: Container(
-                                  width: Get.width,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 5),
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "GALI DISAWAR",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Open ${gethomedata?.result[index].openTime.toUpperCase() ?? "HOLIDAY"}",
-                                            style: TextStyle(
-                                                fontSize: 11.5,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          /* Container(
-                                             child: Text(
-                                               gethomedata?.result[index]
-                                                               .isOpen ==
-                                                           "0" &&
-                                                       gethomedata?.result[index]
-                                                               .isClose ==
-                                                           "0"
-                                                   ? "Market Close"
-                                                   : "Market Open",
-                                               style: TextStyle(
-                                                   color: gethomedata
-                                                                   ?.result[
-                                                                       index]
-                                                                   .isOpen ==
-                                                               "0" &&
-                                                           gethomedata
-                                                                   ?.result[
-                                                                       index]
-                                                                   .isClose ==
-                                                               "0"
-                                                       ? Colors.redAccent[700]
-                                                       : Colors.green,
-                                                   fontSize: 11,
-                                                   fontWeight: FontWeight.w800),
-                                             ),
-                                           ), */
-                                          Text(
-                                            "Close ${gethomedata?.result[index].closeTime.toUpperCase() ?? "HOLIDAY"}",
-                                            style: TextStyle(
-                                                fontSize: 11.5,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            gethomedata?.result[index].market ??
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(), */
+                    gethomedata!.verify != '0'
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.to(() => AddPointScreen(
+                                          wallet: gethomedata?.wallet ?? ""));
+                                    },
+                                    child: homeButton(
+                                        ImageUtils.walletd, "ADD MONEY")),
+                                InkWell(
+                                    onTap: () {
+                                      Get.to(() => WithdrawPoint(
+                                          wallet: gethomedata?.wallet ?? ""));
+                                    },
+                                    child: homeButton(
+                                        ImageUtils.withdraw, "WITHDRAW")),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    gethomedata!.verify != '0'
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.to(() => SelectGame(
+                                          wallet: gethomedata?.wallet ?? ""));
+                                    },
+                                    child: homeTextButton("PLAY STARLINE", 17)),
+                                InkWell(
+                                    onTap: () async {
+                                      if (getConfigData!.data[18].data == "0") {
+                                      } else {
+                                        const countrycode = '91';
+                                        String phoneNumber =
+                                            '${getConfigData!.data[1].data}';
+                                        print("phone number : $phoneNumber");
+                                        final whatsappUrl =
+                                            'https://wa.me/$countrycode$phoneNumber';
+                                        if (await canLaunch(whatsappUrl)) {
+                                          await launch(whatsappUrl,
+                                              forceSafariVC: false);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              content: Text(
+                                                  'WhatsApp is not installed on your device.'),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    child: homeButton(
+                                        ImageUtils.whatsapp, "WHATSAPP")),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    /* gethomedata!.verify != '0'
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.to(() => SelectGame(
+                                          wallet: gethomedata?.wallet ?? ""));
+                                    },
+                                    child: homeTextButton("PLAY STARLINE", 17)),
+                                InkWell(
+                                    onTap: () {
+                                      Get.to(() => GaliDisawar(
+                                          wallet: gethomedata?.wallet ?? ""));
+                                    },
+                                    child:
+                                        homeTextButton("PLAY GALI DESAWAR", 15)),
+                              ],
+                            ),
+                          )
+                        : Container(), */
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsetsDirectional.symmetric(
+                            horizontal: 8, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFef2a7a),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: gethomedata!.result.length,
+                            itemBuilder: (context, index) {
+                              final List<GlobalKey<ShakeWidgetState>>
+                                  shakeKeys = List.generate(
+                                gethomedata!.result.length,
+                                (index) => GlobalKey<ShakeWidgetState>(),
+                              );
+                              return GestureDetector(
+                                onTap: () {
+                                  if (gethomedata!.verify != '0') {
+                                    if (gethomedata?.result[index].isOpen ==
+                                            "0" &&
+                                        gethomedata?.result[index].isClose ==
+                                            "0") {
+                                      shakeKeys[index].currentState?.shake();
+                                      Vibration.vibrate(duration: 700);
+                                    } else {
+                                      int isOpen = int.tryParse(gethomedata!
+                                              .result[index].isOpen) ??
+                                          0;
+                                      int isClose = int.tryParse(gethomedata!
+                                              .result[index].isClose) ??
+                                          0;
+                                      print("home open : $isOpen");
+                                      print("home close : $isClose");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => GameScreen(
+                                            openTime: gethomedata!
+                                                .result[index].openTime,
+                                            closeTime: gethomedata!
+                                                .result[index].closeTime,
+                                            title: gethomedata
+                                                    ?.result[index].market ??
                                                 "",
-                                            style: GoogleFonts.lora(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
+                                            walletPrice: gethomedata!.wallet,
+                                            isOpen: isOpen,
+                                            isClose: isClose,
                                           ),
-                                          Row(
-                                            children: [
-                                              gethomedata!.verify != '0'
-                                                  ? Container(
-                                                      width: 55,
-                                                      decoration: BoxDecoration(
-                                                          color: gethomedata
-                                                                          ?.result[
-                                                                              index]
-                                                                          .isOpen ==
-                                                                      "0" &&
-                                                                  gethomedata
-                                                                          ?.result[
-                                                                              index]
-                                                                          .isClose ==
-                                                                      "0"
-                                                              ? Color(
-                                                                  0xFFC21A09)
-                                                              : Color(
-                                                                  0xFF04b83c),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5,
-                                                              vertical: 4),
-                                                      child: Center(
-                                                        child: Text(
-                                                          gethomedata
-                                                                          ?.result[
-                                                                              index]
-                                                                          .isOpen ==
-                                                                      "0" &&
-                                                                  gethomedata
-                                                                          ?.result[
-                                                                              index]
-                                                                          .isClose ==
-                                                                      "0"
-                                                              ? "Close"
-                                                              : "Play",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ))
-                                                  : Container(),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              gethomedata!.verify != '0'
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        Get.to(
-                                                            () => ChartScreen(
-                                                                  market: gethomedata
-                                                                          ?.result[
-                                                                              index]
-                                                                          .market ??
-                                                                      "",
-                                                                ));
-                                                      },
-                                                      child: Container(
-                                                          height: 30,
-                                                          width: 60,
-                                                          child: Image.asset(
-                                                              ImageUtils
-                                                                  .penalChart)),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 6,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            gethomedata?.result[index].result ??
-                                                "",
-                                            style: GoogleFonts.mukta(
-                                                fontSize: 16,
-                                                color: Color(0xFFC21A09),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      gethomedata!.verify != '0'
-                                          ? Container(
-                                              width: Get.width,
-                                              height: 26,
-                                              color: gethomedata?.result[index]
-                                                              .isOpen ==
-                                                          "0" &&
-                                                      gethomedata?.result[index]
-                                                              .isClose ==
-                                                          "0"
-                                                  ? Color(0xFFC21A09)
-                                                  : Color(0xFF04b83c),
-                                              child: Center(
-                                                  child: Text(
-                                                gethomedata?.result[index]
+                                        ),
+                                      );
+                                    }
+                                  } else {}
+                                },
+                                child: ShakeMe(
+                                  key: shakeKeys[index],
+                                  // configure the animation parameters
+                                  shakeCount: 5,
+                                  shakeOffset: 5,
+                                  shakeDuration: Duration(milliseconds: 700),
+                                  child: Container(
+                                    width: Get.width,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Open ${gethomedata?.result[index].openTime.toUpperCase() ?? "HOLIDAY"}",
+                                              style: TextStyle(
+                                                  fontSize: 11.5,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            /* Container(
+                                               child: Text(
+                                                 gethomedata?.result[index]
+                                                                 .isOpen ==
+                                                             "0" &&
+                                                         gethomedata?.result[index]
+                                                                 .isClose ==
+                                                             "0"
+                                                     ? "Market Close"
+                                                     : "Market Open",
+                                                 style: TextStyle(
+                                                     color: gethomedata
+                                                                     ?.result[
+                                                                         index]
+                                                                     .isOpen ==
+                                                                 "0" &&
+                                                             gethomedata
+                                                                     ?.result[
+                                                                         index]
+                                                                     .isClose ==
+                                                                 "0"
+                                                         ? Colors.redAccent[700]
+                                                         : Colors.green,
+                                                     fontSize: 11,
+                                                     fontWeight: FontWeight.w800),
+                                               ),
+                                             ), */
+                                            Text(
+                                              "Close ${gethomedata?.result[index].closeTime.toUpperCase() ?? "HOLIDAY"}",
+                                              style: TextStyle(
+                                                  fontSize: 11.5,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              gethomedata
+                                                      ?.result[index].market ??
+                                                  "",
+                                              style: GoogleFonts.lora(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Row(
+                                              children: [
+                                                gethomedata!.verify != '0'
+                                                    ? Container(
+                                                        width: 55,
+                                                        decoration: BoxDecoration(
+                                                            color: gethomedata
+                                                                            ?.result[
+                                                                                index]
+                                                                            .isOpen ==
+                                                                        "0" &&
+                                                                    gethomedata
+                                                                            ?.result[
+                                                                                index]
+                                                                            .isClose ==
+                                                                        "0"
+                                                                ? Color(
+                                                                    0xFFC21A09)
+                                                                : Color(
+                                                                    0xFF04b83c),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8)),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 5,
+                                                                vertical: 4),
+                                                        child: Center(
+                                                          child: Text(
+                                                            gethomedata?.result[index].isOpen ==
+                                                                        "0" &&
+                                                                    gethomedata
+                                                                            ?.result[index]
+                                                                            .isClose ==
+                                                                        "0"
+                                                                ? "Close"
+                                                                : "Play",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ))
+                                                    : Container(),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                gethomedata!.verify != '0'
+                                                    ? GestureDetector(
+                                                        onTap: () {
+                                                          Get.to(
+                                                              () => ChartScreen(
+                                                                    market: gethomedata
+                                                                            ?.result[index]
+                                                                            .market ??
+                                                                        "",
+                                                                  ));
+                                                        },
+                                                        child: Container(
+                                                            height: 30,
+                                                            width: 60,
+                                                            child: Image.asset(
+                                                                ImageUtils
+                                                                    .penalChart)),
+                                                      )
+                                                    : Container()
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              gethomedata
+                                                      ?.result[index].result ??
+                                                  "",
+                                              style: GoogleFonts.mukta(
+                                                  fontSize: 16,
+                                                  color: Color(0xFFC21A09),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        gethomedata!.verify != '0'
+                                            ? Container(
+                                                width: Get.width,
+                                                height: 26,
+                                                color: gethomedata
+                                                                ?.result[index]
                                                                 .isOpen ==
                                                             "0" &&
                                                         gethomedata
                                                                 ?.result[index]
                                                                 .isClose ==
                                                             "0"
-                                                    ? "Close for Today"
-                                                    : "Running for Today",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              )),
-                                            )
-                                          : Container(),
-                                      SizedBox(
-                                        height: 2,
-                                      ),
-                                    ],
+                                                    ? Color(0xFFC21A09)
+                                                    : Color(0xFF04b83c),
+                                                child: Center(
+                                                    child: Text(
+                                                  gethomedata?.result[index]
+                                                                  .isOpen ==
+                                                              "0" &&
+                                                          gethomedata
+                                                                  ?.result[
+                                                                      index]
+                                                                  .isClose ==
+                                                              "0"
+                                                      ? "Close for Today"
+                                                      : "Running for Today",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                )),
+                                              )
+                                            : Container(),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
-                    ),
-                  )
-                ],
+                              );
+                            }),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
     );

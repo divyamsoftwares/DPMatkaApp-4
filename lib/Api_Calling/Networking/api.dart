@@ -3,7 +3,7 @@ import 'package:dp_matka_3/App_Utils/app_utils.dart';
 class ApiUrls {
   static final String baseUrl = apiLinkUrl.isNotEmpty
       ? apiLinkUrl
-      : "http://i9b.f35.mywebsitetransfer.com/mysattamatka/admin/";
+      : "https://kalyansatta3d.codetrick.in/admin/";
 
   static const String login = "api/login.php";
   static const String signup = "api/register2.php";
