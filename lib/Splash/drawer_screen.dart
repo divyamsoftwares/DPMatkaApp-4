@@ -22,14 +22,14 @@ class DrawerScreen extends StatefulWidget {
   final String username;
   final String verify;
   final String playstoreUrl;
- 
-  const DrawerScreen(
-      {super.key,
-      required this.wallet,
-      required this.username,
-      required this.verify,
-      required this.playstoreUrl,
-      });
+
+  const DrawerScreen({
+    super.key,
+    required this.wallet,
+    required this.username,
+    required this.verify,
+    required this.playstoreUrl,
+  });
 
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
@@ -116,7 +116,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
-    
+
     setState(() {
       _packageInfo = info;
     });
@@ -134,24 +134,26 @@ class _DrawerScreenState extends State<DrawerScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 30,),
+                  SizedBox(
+                    height: 30,
+                  ),
                   Container(
                     height: 100,
                     width: 100,
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: 
-                                  Image(image: AssetImage(ImageUtils.logoRmoveBg)),
+                    child: Image(image: AssetImage(ImageUtils.logoRmoveBg)),
                   ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerHome,))
-                      
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(
+                              ImageUtils.drawerHome,
+                            ))),
                     onTap: () {
                       Get.back();
                     },
@@ -163,17 +165,22 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   widget.verify != '0'
                       ? ListTile(
                           visualDensity: VisualDensity(vertical: -1),
                           leading: Container(
-                            height: Get.height * 0.04,
-                            width: Get.width * 0.06,
-                            child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerProfile,))
-                          ),
+                              height: Get.height * 0.04,
+                              width: Get.width * 0.06,
+                              child: SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image.asset(
+                                    ImageUtils.drawerProfile,
+                                  ))),
                           onTap: () {
                             Get.to(() => EditProfile());
                           },
@@ -186,17 +193,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                         )
                       : Container(),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerChangePassword,))
-                     
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(
+                              ImageUtils.drawerChangePassword,
+                            ))),
                     onTap: () {
                       Get.to(() => ChangePassword());
                     },
@@ -208,20 +219,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   widget.verify != '0'
                       ? ListTile(
                           visualDensity: VisualDensity(vertical: -1),
                           leading: Container(
-                            height: Get.height * 0.04,
-                            width: Get.width * 0.06,
-                            child:SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.walletd,))
-                            
-                          ),
+                              height: Get.height * 0.04,
+                              width: Get.width * 0.06,
+                              child: SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image.asset(
+                                    ImageUtils.walletd,
+                                  ))),
                           onTap: () {
-                            Get.to(()=>WalletScreen(wallet : widget.wallet));
+                            Get.to(() => WalletScreen(wallet: widget.wallet));
                           },
                           title: const Text(
                             'Wallet',
@@ -232,18 +247,22 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                         )
                       : Container(),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   widget.verify != '0'
                       ? ListTile(
                           visualDensity: VisualDensity(vertical: -1),
                           leading: Container(
-                            height: Get.height * 0.04,
-                            width: Get.width * 0.06,
-                            child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.winninghistory,))
-                            
-                          ),
+                              height: Get.height * 0.04,
+                              width: Get.width * 0.06,
+                              child: SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image.asset(
+                                    ImageUtils.winninghistory,
+                                  ))),
                           onTap: () {
                             Get.to(() => WinHistoryScreen());
                           },
@@ -256,20 +275,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                         )
                       : Container(),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   widget.verify != '0'
                       ? ListTile(
                           visualDensity: VisualDensity(vertical: -1),
                           leading: Container(
-                            height: Get.height * 0.04,
-                            width: Get.width * 0.06,
-                            child:SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.biwdhistory,))
-                             
-                          ),
+                              height: Get.height * 0.04,
+                              width: Get.width * 0.06,
+                              child: SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image.asset(
+                                    ImageUtils.biwdhistory,
+                                  ))),
                           onTap: () {
-                           Get.to(()=> BidHistory());
+                            Get.to(() => BidHistory());
                           },
                           title: const Text(
                             'Game History',
@@ -280,18 +303,22 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                         )
                       : Container(),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   widget.verify != '0'
                       ? ListTile(
                           visualDensity: VisualDensity(vertical: -1),
                           leading: Container(
-                            height: Get.height * 0.04,
-                            width: Get.width * 0.06,
-                            child:SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerGameRates,))
-                            
-                          ),
+                              height: Get.height * 0.04,
+                              width: Get.width * 0.06,
+                              child: SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: Image.asset(
+                                    ImageUtils.drawerGameRates,
+                                  ))),
                           onTap: () {
                             Get.to(() => GameRatesScreen());
                           },
@@ -304,19 +331,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                         )
                       : Container(),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerShare,))
-                      
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(
+                              ImageUtils.drawerShare,
+                            ))),
                     onTap: () {
-                      Share.share("https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
+                      Share.share(
+                          "https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
                     },
                     title: const Text(
                       'Share',
@@ -326,17 +358,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerContact,))
-                     
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(
+                              ImageUtils.drawerContact,
+                            ))),
                     onTap: () {
                       Get.to(() => ContactUsScreen());
                     },
@@ -348,19 +384,26 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.drawerRating,))
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(
+                              ImageUtils.drawerRating,
+                            ))),
                     onTap: () {
-                      print("playStore Url : https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
-                      _launchUrl("https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
+                      print(
+                          "playStore Url : https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
+                      _launchUrl(
+                          "https://play.google.com/store/apps/details?id=${_packageInfo.packageName}");
                       // _launchUrl(widget.playstoreUrl);
                     },
                     title: const Text(
@@ -371,17 +414,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     ),
                   ),
-                  Divider(color: Colors.grey,height: 0,),
+                  Divider(
+                    color: Colors.grey,
+                    height: 0,
+                  ),
                   ListTile(
                     visualDensity: VisualDensity(vertical: -1),
                     leading: Container(
-                      height: Get.height * 0.04,
-                      width: Get.width * 0.06,
-                      child: SizedBox(
-                              height: 25,width: 25,
-                              child: Image.asset(ImageUtils.logout))
-                     
-                    ),
+                        height: Get.height * 0.04,
+                        width: Get.width * 0.06,
+                        child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: Image.asset(ImageUtils.logout))),
                     onTap: () {
                       printAndRemoveSessionData();
                     },

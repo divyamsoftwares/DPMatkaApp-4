@@ -106,7 +106,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   height: 113,
                   width: Get.width * 0.43,
                   decoration: BoxDecoration(
-                      color: Color(0xFF38ACEC),
+                      color: ColorUtils.blue,
                       borderRadius: BorderRadius.circular(24)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,7 +114,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         SizedBox(
                           height: 40,width: 40,
                           child: Image.asset(image)),
-                        Text(title,style: TextStyle(color: ColorUtils.blue,fontWeight: FontWeight.w600),)
+                        Text(title,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
                       ],
                     ),
                 ),

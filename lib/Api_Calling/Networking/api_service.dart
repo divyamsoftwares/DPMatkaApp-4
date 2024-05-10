@@ -27,10 +27,9 @@ import 'package:dp_matka_3/Api_Calling/Data_Model/login_model.dart';
 import 'package:dp_matka_3/Api_Calling/Networking/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ApiServices{
-
-  static Future<SignupData?> signupData(
-      String mobileNumber, String name, String password, String session,BuildContext context) async {
+class ApiServices {
+  static Future<SignupData?> signupData(String mobileNumber, String name,
+      String password, String session, BuildContext context) async {
     final url = ApiUrls.baseUrl + ApiUrls.signup;
     log("signup Url....${url}");
     final bodydata = {
@@ -45,47 +44,48 @@ class ApiServices{
 
     log("login bodydata : $bodydata");
 
-    try{
+    try {
       final uri = Uri.parse(url);
-    final response = await http.post(uri,body: bodydata);
-    print("login response>>${response.statusCode}");
-    print("login response data>>${response.body}");
+      final response = await http.post(uri, body: bodydata);
+      print("login response>>${response.statusCode}");
+      print("login response data>>${response.body}");
 
-    if(response.statusCode == 200){
-      log("body not null.....");
-      final body = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        log("body not null.....");
+        final body = jsonDecode(response.body);
 
-      if(body['success'] == '0'){
-        log("body not success>>${body['msg']}");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(body['msg'])));
-      }else{
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('bodydata', bodydataJson);
-        final String bodyJsonString = json.encode(body);
-       final SignupData getSignupData = signupDataFromJson(bodyJsonString);
+        if (body['success'] == '0') {
+          log("body not success>>${body['msg']}");
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(body['msg'])));
+        } else {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('bodydata', bodydataJson);
+          final String bodyJsonString = json.encode(body);
+          final SignupData getSignupData = signupDataFromJson(bodyJsonString);
 
-        print("getSignupData : $body");
-        return getSignupData;
+          print("getSignupData : $body");
+          return getSignupData;
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text("Can't create ID Now, Try again Later.")));
+        return null;
       }
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text("Can't create ID Now, Try again Later.")));
-      return null;
-    }
-    }on Exception catch (e){
+    } on Exception catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text("Can't Create ID Now, Try again Later.")));
+          behavior: SnackBarBehavior.floating,
+          content: Text("Can't Create ID Now, Try again Later.")));
     }
 
     return null;
   }
 
   //Login Data
-  static Future<LoginData?> fetchLogindata(
-      String mobileNumber, String password, String sessionKey,BuildContext context) async {
+  static Future<LoginData?> fetchLogindata(String mobileNumber, String password,
+      String sessionKey, BuildContext context) async {
     final url = ApiUrls.baseUrl + ApiUrls.login;
     log("Login Url....${url}");
     final bodyData = {
@@ -99,44 +99,44 @@ class ApiServices{
     // log("login bodydata json : $bodydataJson");
     log("login bodydata : $bodyData");
 
-    try{
+    try {
       final uri = Uri.parse(url);
-    final response = await http.post(uri,body: bodyData);
-    print("login response>>${response.statusCode}");
-    print("login response data>>${response.body}");
+      final response = await http.post(uri, body: bodyData);
+      print("login response>>${response.statusCode}");
+      print("login response data>>${response.body}");
 
-    // log("bodyData>>>>${body}");
-    if(response.statusCode == 200){
-      log("body not null.....");
-      final body = jsonDecode(response.body);
+      // log("bodyData>>>>${body}");
+      if (response.statusCode == 200) {
+        log("body not null.....");
+        final body = jsonDecode(response.body);
 
-      if(body['success'] == '0'){
-        log("body not success>>${body['msg']}");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(body['msg'])));
-      }else{
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('bodydata', bodydataJson);
-        final String bodyJsonString = json.encode(body);
-        final LoginData getLoginData = loginDataFromJson(bodyJsonString);
+        if (body['success'] == '0') {
+          log("body not success>>${body['msg']}");
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(body['msg'])));
+        } else {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('bodydata', bodydataJson);
+          final String bodyJsonString = json.encode(body);
+          final LoginData getLoginData = loginDataFromJson(bodyJsonString);
 
-        print("getHomeData : $body");
-        return getLoginData;
+          print("getHomeData : $body");
+          return getLoginData;
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text("Can't Login Now, Try again Later")));
+        return null;
       }
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text("Can't Login Now, Try again Later")));
-      return null;
-    }
-    }on Exception catch (e){
+    } on Exception catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text("Can't Login Now, Try again Later")));
+          behavior: SnackBarBehavior.floating,
+          content: Text("Can't Login Now, Try again Later")));
     }
-    
-    return null;
 
+    return null;
   }
 
   //get config
@@ -144,15 +144,15 @@ class ApiServices{
   static Future<GetConfig?> fetchGetConfigData(BuildContext context) async {
     final url = ApiUrls.baseUrl + ApiUrls.getConfig;
 
-    try{
+    try {
       final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final GetConfig getConfigData = getConfigFromJson(body);
+      final response = await http.get(uri);
+      final body = response.body;
+      final GetConfig getConfigData = getConfigFromJson(body);
 
-    print("getConfigData : $body");
-    return getConfigData;
-    } on Exception catch(e){
+      print("getConfigData : $body");
+      return getConfigData;
+    } on Exception catch (e) {
       print(e);
     }
     return null;
@@ -162,7 +162,7 @@ class ApiServices{
 
   static Future<HowToPlayData> howToPlayData() async {
     final url = ApiUrls.baseUrl + ApiUrls.howToPlay + "?text=howtoplay";
-print("play url : $url");
+    print("play url : $url");
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
@@ -174,8 +174,8 @@ print("play url : $url");
 
   //HomeData
 
-  static Future<HomeData?> fetchHomedata(BuildContext context,
-      String sessionId, String mobileNumber) async {
+  static Future<HomeData?> fetchHomedata(
+      BuildContext context, String sessionId, String mobileNumber) async {
     final url = ApiUrls.baseUrl + ApiUrls.home;
     final bodydata = {
       "app": "kalyanpro",
@@ -213,7 +213,7 @@ print("play url : $url");
     final HomeData getHomeData = homeDataFromJson(body);
 
     print("getHomeData : $body");
-    
+
     return getHomeData;
   }
 
@@ -241,7 +241,7 @@ print("play url : $url");
     final body = response.body;
 
     print("API Response: $body"); // Print the API response here
- 
+
     if (body == null || body.isEmpty) {
       print("Received a null or empty response.");
       return TransactionHistory(data: []);
@@ -327,7 +327,6 @@ print("play url : $url");
 
     print("API Response: $body"); // Print the API response here
 
-
     if (body == null || body.isEmpty) {
       print("Received a null or empty response.");
       return GameData(data: []);
@@ -341,8 +340,9 @@ print("play url : $url");
 
   //GameHistoryDate
 
-  static Future<GameData> fetchDateGameData(String mobile,String date) async {
-    final url = ApiUrls.baseUrl + ApiUrls.gameData + "?mobile=$mobile"+"&date=$date";
+  static Future<GameData> fetchDateGameData(String mobile, String date) async {
+    final url =
+        ApiUrls.baseUrl + ApiUrls.gameData + "?mobile=$mobile" + "&date=$date";
     log("url : $url");
     final uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -361,17 +361,18 @@ print("play url : $url");
     return getGameData;
   }
 
-   //upi Transaction
+  //upi Transaction
 
-  static Future<Map> upiTransactionData(String amount,String hash_key,String session,String mobile, String type) async {
+  static Future<Map> upiTransactionData(String amount, String hash_key,
+      String session, String mobile, String type) async {
     final url = ApiUrls.baseUrl + ApiUrls.upiPayment;
     print("upi url = $url");
     final bodydata = {
-      "amount":amount,
-      "hash_key":hash_key,
-      "session":session,
-      "mobile":mobile,
-      "type":type,
+      "amount": amount,
+      "hash_key": hash_key,
+      "session": session,
+      "mobile": mobile,
+      "type": type,
     };
     final uri = Uri.parse(url);
     log("upi transaction bodydata : $bodydata");
@@ -385,15 +386,16 @@ print("play url : $url");
 
   // get payment
 
-  static Future<Map> getPaymentData(String amount,String hash_key,String session,String mobile, String type) async {
+  static Future<Map> getPaymentData(String amount, String hash_key,
+      String session, String mobile, String type) async {
     final url = ApiUrls.baseUrl + ApiUrls.getPayment;
     print("upi url = $url");
     final bodydata = {
-      "amount":amount,
-      "hash_key":hash_key,
-      "session":session,
-      "mobile":mobile,
-      "type":type,
+      "amount": amount,
+      "hash_key": hash_key,
+      "session": session,
+      "mobile": mobile,
+      "type": type,
     };
     final uri = Uri.parse(url);
     log("getPaymentData bodydata : $bodydata");
@@ -458,71 +460,69 @@ print("play url : $url");
       return TransactionHistory(data: []);
     }
 
-    final TransactionHistory? getTransactionData = transactionHistoryFromJson(body);
+    final TransactionHistory? getTransactionData =
+        transactionHistoryFromJson(body);
     print("getTransactionData>>>>> $getTransactionData");
     return getTransactionData;
   }
 
   static Future<String?> fetchChartData(String market) async {
-  final url = ApiUrls.baseUrl + ApiUrls.getChart + "?market=$market";
+    final url = ApiUrls.baseUrl + ApiUrls.getChart + "?market=$market";
 
-  final uri = Uri.parse(url);
+    final uri = Uri.parse(url);
 
-  final response = await http.post(uri);
+    final response = await http.post(uri);
 
-  if (response.statusCode == 200) {
-    final contentType = response.headers['content-type'];
+    if (response.statusCode == 200) {
+      final contentType = response.headers['content-type'];
 
-    if (contentType != null && contentType.contains('text/html')) {
-      // Handle HTML response
-      print("HTML Response: ${response.body}");
+      if (contentType != null && contentType.contains('text/html')) {
+        // Handle HTML response
+        print("HTML Response: ${response.body}");
 
-      return response.body; 
+        return response.body;
+      } else {
+        // Handle JSON response
+        final body = response.body;
+        final String getUpiData = jsonDecode(body);
+
+        print("getChartData : $body");
+        return getUpiData;
+      }
     } else {
-      // Handle JSON response
-      final body = response.body;
-      final String getUpiData = jsonDecode(body);
-
-      print("getChartData : $body");
-      return getUpiData;
+      print("Error fetching chart data. Status code: ${response.statusCode}");
+      return null; // Handle error case appropriately
     }
-  } else {
-    print("Error fetching chart data. Status code: ${response.statusCode}");
-    return null; // Handle error case appropriately
   }
-}
 
   static Future<String?> fetchMainChartData(String market) async {
-  final url = ApiUrls.baseUrl + ApiUrls.mainChart + "?market=$market";
+    final url = ApiUrls.baseUrl + ApiUrls.mainChart + "?market=$market";
 
-  final uri = Uri.parse(url);
+    final uri = Uri.parse(url);
 
-  final response = await http.post(uri);
+    final response = await http.post(uri);
 
-  if (response.statusCode == 200) {
-    final contentType = response.headers['content-type'];
+    if (response.statusCode == 200) {
+      final contentType = response.headers['content-type'];
 
-    if (contentType != null && contentType.contains('text/html')) {
-      // Handle HTML response
-      print("HTML Response: ${response.body}");
+      if (contentType != null && contentType.contains('text/html')) {
+        // Handle HTML response
+        print("HTML Response: ${response.body}");
 
-      return response.body; 
+        return response.body;
+      } else {
+        // Handle JSON response
+        final body = response.body;
+        final String getUpiData = jsonDecode(body);
+
+        print("getChartData : $body");
+        return getUpiData;
+      }
     } else {
-      // Handle JSON response
-      final body = response.body;
-      final String getUpiData = jsonDecode(body);
-
-      print("getChartData : $body");
-      return getUpiData;
+      print("Error fetching chart data. Status code: ${response.statusCode}");
+      return null; // Handle error case appropriately
     }
-  } else {
-    print("Error fetching chart data. Status code: ${response.statusCode}");
-    return null; // Handle error case appropriately
   }
-}
-
-
-
 
 // ==================================================================================================================================================================================
 
@@ -542,18 +542,22 @@ print("play url : $url");
   }
 
   static Future<DeleteGaliDSid> deleteGaliDisawar(
-      String id,
-      String gameID,
-      String name,
-      String digit,
-      String mobile,
-      ) async {
+    String id,
+    String gameID,
+    String name,
+    String digit,
+    String mobile,
+  ) async {
     // final url = ApiUrls.baseUrl + ApiUrls.deleteGalidisawer +  "?deleteId=301&gameid=2&close=open&name=FARIDABAD&type=left_digit&open=open&mobile=9737345171";
-    final url = ApiUrls.baseUrl + ApiUrls.deleteGalidisawer +  "?deleteId=$id&gameid=2&close=open&name=$name&type=$digit&open=open&mobile=$mobile";
+    final url = ApiUrls.baseUrl +
+        ApiUrls.deleteGalidisawer +
+        "?deleteId=$id&gameid=2&close=open&name=$name&type=$digit&open=open&mobile=$mobile";
     log("delete url : $url");
     final uri = Uri.parse(url);
     // log("GalidisawerBidHistory bodyData : $bodydata");
-    final response = await http.get(uri,);
+    final response = await http.get(
+      uri,
+    );
     final body = response.body;
     print("object  ??????? ${response.body}");
     DeleteGaliDSid deleteId = deleteGaliDSidFromJson(body);
@@ -565,13 +569,13 @@ print("play url : $url");
   //place_galidisawar
 
   static Future<PlaceBidGaliDs> placeGaliDSbet(
-      String id,
-      String gameid,
-      String type,
-      String userid,
-      String gname,
-      int bida,
-      ) async {
+    String id,
+    String gameid,
+    String type,
+    String userid,
+    String gname,
+    int bida,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.placeBidGalidsawer;
     final bodydata = {
       "id": id,
@@ -599,15 +603,19 @@ print("play url : $url");
   //getGalidisawarBet
 
   static Future<GetGalidsBet> getGaliDisawarBet(
-      String mobile,
-      String gameId,
-      String digit,
-      ) async {
-    final url = ApiUrls.baseUrl + ApiUrls.getGalidisawerBet +  "?mobile=$mobile&game_id=$gameId&type=$digit";
+    String mobile,
+    String gameId,
+    String digit,
+  ) async {
+    final url = ApiUrls.baseUrl +
+        ApiUrls.getGalidisawerBet +
+        "?mobile=$mobile&game_id=$gameId&type=$digit";
 
     final uri = Uri.parse(url);
     log("GalidisawerBid : $url");
-    final response = await http.get(uri,);
+    final response = await http.get(
+      uri,
+    );
     final body = response.body;
     GetGalidsBet getGalidisawarBet = getGalidsBetFromJson(body);
 
@@ -618,15 +626,14 @@ print("play url : $url");
   //add galiDS Bid
 
   static Future<AddGaliDsBid> addGaliDSbet(
-      String mobile,
-      String digit,
-      String amount,
-      String gametype,
-      String gameid,
-      
-      String userid,
-      String openclo,
-      ) async {
+    String mobile,
+    String digit,
+    String amount,
+    String gametype,
+    String gameid,
+    String userid,
+    String openclo,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.addGalidisawerBid;
     final bodydata = {
       "mobile": mobile,
@@ -653,14 +660,17 @@ print("play url : $url");
 
   //bidHistory GaliDisawar
 
-   static Future<BidHistoryGaliDs> bidHistoryGaliDisawar(
-      String mobile,
-      ) async {
-    final url = ApiUrls.baseUrl + ApiUrls.galidisawerBidHistory +  "?mobile=$mobile";
+  static Future<BidHistoryGaliDs> bidHistoryGaliDisawar(
+    String mobile,
+  ) async {
+    final url =
+        ApiUrls.baseUrl + ApiUrls.galidisawerBidHistory + "?mobile=$mobile";
 
     final uri = Uri.parse(url);
     log("GalidisawerBidHistory url : $url");
-    final response = await http.get(uri,);
+    final response = await http.get(
+      uri,
+    );
     final body = response.body;
     BidHistoryGaliDs bidHistoryGaliDs = bidHistoryGaliDsFromJson(body);
 
@@ -670,15 +680,19 @@ print("play url : $url");
 
   //dateBidHistory GaliDisawar
 
-   static Future<BidHistoryGaliDs> dateBidHistoryGaliDisawar(
-      String mobile,
-      String date,
-      ) async {
-    final url = ApiUrls.baseUrl + ApiUrls.galidisawerBidHistory +  "?mobile=$mobile&sub=1&date=$date";
+  static Future<BidHistoryGaliDs> dateBidHistoryGaliDisawar(
+    String mobile,
+    String date,
+  ) async {
+    final url = ApiUrls.baseUrl +
+        ApiUrls.galidisawerBidHistory +
+        "?mobile=$mobile&sub=1&date=$date";
 
     final uri = Uri.parse(url);
     // log("GalidisawerBidHistory bodyData : $bodydata");
-    final response = await http.post(uri,);
+    final response = await http.post(
+      uri,
+    );
     final body = response.body;
     BidHistoryGaliDs bidHistoryGaliDs = bidHistoryGaliDsFromJson(body);
 
@@ -688,10 +702,10 @@ print("play url : $url");
 
   //winHistory GaliDisawar
 
-   static Future<Map> winHistoryGaliDisawar(
-      String mobile,
-      String sub,
-      ) async {
+  static Future<Map> winHistoryGaliDisawar(
+    String mobile,
+    String sub,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.galidisawerWinHistory;
     final bodydata = {
       "mobile": mobile,
@@ -702,7 +716,6 @@ print("play url : $url");
     log("GalidisawerBidHistory bodyData : $bodydata");
     final response = await http.get(
       uri,
-      
     );
     Map body = jsonDecode(response.body);
 
@@ -718,23 +731,20 @@ print("play url : $url");
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
-    final GameRateGaliDisawar getGamerateGaliDisawar = gameRateGaliDisawarFromJson(body);
+    final GameRateGaliDisawar getGamerateGaliDisawar =
+        gameRateGaliDisawarFromJson(body);
 
     print("getGamerateGaliDisawar : $body");
     return getGamerateGaliDisawar;
   }
-
-
-
-
 
   // ================================================================================================================================================================================
 
   //marketlist-starline
 
   static Future<MarketlistStarline> marketlistStarline(
-      String session,
-      ) async {
+    String session,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.marketListStarline;
     final bodydata = {
       "session": session,
@@ -747,7 +757,8 @@ print("play url : $url");
       body: bodydata,
     );
     final body = response.body;
-    final MarketlistStarline marketStarlineList = marketlistStarlineFromJson(body);
+    final MarketlistStarline marketStarlineList =
+        marketlistStarlineFromJson(body);
 
     print("starlineMarketData : $body");
     return marketStarlineList;
@@ -756,12 +767,12 @@ print("play url : $url");
   //starline Timing
 
   static Future<StarlineTiming> starlineTiming(
-      String market,
-      String session,
-      ) async {
+    String market,
+    String session,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.starlineTiming;
     final bodydata = {
-      "market":market,
+      "market": market,
       "session": session,
     };
 
@@ -781,16 +792,16 @@ print("play url : $url");
   //starlinebet
 
   static Future<BetData> starlineBetData(
-      String digit,
-      String amount,
-      String total,
-      String game,
-      String type,
-      String timing,
-      String session,
-      String mobile,
-      String bazar,
-      ) async {
+    String digit,
+    String amount,
+    String total,
+    String game,
+    String type,
+    String timing,
+    String session,
+    String mobile,
+    String bazar,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.bet;
     final bodydata = {
       "number": digit,
@@ -798,7 +809,7 @@ print("play url : $url");
       "total": total,
       "game": game,
       "types": type,
-      "timing":timing,
+      "timing": timing,
       "session": session,
       "mobile": mobile,
       "bazar": bazar
@@ -820,10 +831,10 @@ print("play url : $url");
   // profile Data
 
   static Future<Map> profileData(
-      String name,
-      String email,
-      String mobile,
-      ) async {
+    String name,
+    String email,
+    String mobile,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.profile;
     final bodydata = {
       "name": name,
@@ -846,9 +857,9 @@ print("play url : $url");
   // change password
 
   static Future<Map> changePassword(
-      String password,
-      String mobile,
-      ) async {
+    String password,
+    String mobile,
+  ) async {
     final url = ApiUrls.baseUrl + ApiUrls.changePassword;
     final bodydata = {
       "pass": password,

@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Color(0xFFef2a7a),
+        backgroundColor: ColorUtils.blue,
         titleSpacing: 0,
         title: Text("DP Matka",
             style: GoogleFonts.poppins(
@@ -488,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         margin: EdgeInsetsDirectional.symmetric(
                             horizontal: 8, vertical: 5),
                         decoration: BoxDecoration(
-                            color: Color(0xFFef2a7a),
+                            color: ColorUtils.blue,
                             borderRadius: BorderRadius.circular(8)),
                         child: ListView.builder(
                             shrinkWrap: true,

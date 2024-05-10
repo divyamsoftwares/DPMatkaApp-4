@@ -82,12 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SingleChildScrollView(
                 child: Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        gradient: const RadialGradient(
-          colors: [Color(0xFFf4d8c3), Color(0xFFf4d8c3)],
-          radius: 0.5,
-        ),
-      ),
+      decoration: BoxDecoration(),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Form(
@@ -142,47 +137,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(left: 12),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
                           borderSide:
-                              BorderSide(color: Colors.transparent, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 2,
-                          ),
+                              BorderSide(color: Colors.grey, width: 1.5),
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                          borderSide: BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.transparent, width: 2),
+                              BorderSide(color: Colors.grey, width: 1.5),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(24)),
-                            borderSide: BorderSide(color: Colors.transparent)),
+                          borderSide: BorderSide(color: Colors.red, width: 1.5),
+                        ),
                         fillColor: Colors.white,
                         filled: true,
-                        prefixIcon: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    bottomLeft: Radius.circular(24))),
-                            height: 15,
-                            width: 15,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 28,
-                                    width: 28,
-                                    child: Icon(
+                        prefixIcon: Icon(
                                       Icons.call,
                                       color: Colors.grey,
-                                    )),
-                              ],
-                            )),
+                                    ),
                         hintText: "Enter Mobile Number",
                         hintStyle: TextStyle(
                           color: Colors.grey,
@@ -216,24 +189,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(top: 15, left: 12),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                        enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.transparent, width: 2),
+                              BorderSide(color: Colors.grey, width: 1.5),
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.transparent, width: 2),
+                              BorderSide(color: Colors.grey, width: 1.5),
                         ),
-                        errorBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 2),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1.5),
                         ),
-                        focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(24)),
-                            borderSide: BorderSide(color: Colors.transparent)),
                         /* suffixIcon: InkWell(
                           onTap: () {
                             setState(() {
@@ -248,26 +217,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ), */
                         fillColor: Colors.white,
                         filled: true,
-                        prefixIcon: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    bottomLeft: Radius.circular(24))),
-                            height: 15,
-                            width: 15,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 28,
-                                    width: 28,
-                                    child: Icon(
+                        prefixIcon: Icon(
                                       Icons.lock,
                                       color: Colors.grey,
-                                    )),
-                              ],
-                            )),
+                                    ),
                         hintText: "Enter Password",
                         hintStyle: TextStyle(
                           color: Colors.grey,
